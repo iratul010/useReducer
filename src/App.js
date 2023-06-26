@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
-
+const initial = { count: 0, step: 1 };
 function reducer(state, action) {
-  console.log(state);
+ 
   switch (action.type) {
     case "inc":
       return { ...state, count: state.count + state.step };
@@ -9,15 +9,17 @@ function reducer(state, action) {
       return { ...state, count: state.count - state.step };
     case "setCount":
       return { ...state, count: action.payload };
-    case "range":
+    case "setStep":
       return { ...state, step: action.payload };
+    case "reset":
+      return  initial;
     default:
-      return { count: 0, step: 1 };
+      throw new Error('Unknown Action')
   }
 }
 
 function App() {
-  const initial = { count: 0, step: 1 };
+ 
   const [state, dispatch] = useReducer(reducer, initial);
 
   const { count, step } = state;
@@ -29,7 +31,7 @@ function App() {
 
   const handleRangeChange = (event) => {
     const inputValue = Number(event.target.value);
-    dispatch({ type: "range", payload: inputValue });
+    dispatch({ type: "setStep", payload: inputValue });
   };
 
   return (
@@ -72,6 +74,7 @@ function App() {
           +
         </button>
       </div>
+      <button className="btn btn-primary" onClick={()=>dispatch({type:'reset',})}>Reset</button>
     </div>
   );
 }
