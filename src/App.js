@@ -1,17 +1,24 @@
 import { useReducer } from "react";
 
 function reducer(state, action) {
-  console.log(state, action);
-  if (action.type === 'inc') return { value: state.value + action.payload };
-  if (action.type === 'dec') return { value: state.value - action.payload };
-  if (action.type === 'setCount') return { value: action.payload };
-  return state;
+     console.log(state)
+     switch(action.type){
+      case  "inc":
+        return  {...state,count:state.count+1 }
+      case  "dec":
+        return  {...state,count:state.count+1 }
+      case  "setCount": 
+        return  {...state, count:action.payload }
+     default:
+   return { count:0, state:1}
+}
 }
 
-const initial = { value: 0 };
-
 function App() {
-  const [count, dispatch] = useReducer(reducer, initial);
+  const initial = { count: 0,step:1 };
+  const [state, dispatch] = useReducer(reducer, initial);
+ 
+  const {count,step} = state;
 
   const handleInputChange = (event) => {
     const inputValue = parseInt(event.target.value);
@@ -23,10 +30,11 @@ function App() {
       <h2 className='text-3xl text-green-600 text-center'>
         <span className='underline text-red-500'>Hooks</span>: useReducer
       </h2>
-      <div className='flex justify-center items-center w-[400px] m-5 gap-5'>
-        <button className="btn btn-outline btn-success" onClick={() => dispatch({ type: 'inc', payload: 1 })}>
-          Increment
-        </button>
+      <div className="stat-value text-center p-5 m-5 rounded bg-emerald-950 w-[145px] text-white">{count}</div>
+      <div className='flex text-center  justify-center items-center w-[400px] m-5 gap-5'>  <button className="btn btn-outline btn-error text-3xl" onClick={() => dispatch({ type: 'dec', payload: 1 })}>
+      -
+     </button>
+    
         <input
           type="text"
           placeholder="Type here"
@@ -34,10 +42,10 @@ function App() {
           
           onChange={handleInputChange}
         />
-        <button className="btn btn-outline btn-error" onClick={() => dispatch({ type: 'dec', payload: 1 })}>
-          Decrement
-        </button>
-        <div className="stat-value">{count.value}</div>
+        <button className="btn btn-outline btn-success text-3xl" onClick={() => dispatch({ type: 'inc', payload: 1 })}>
+        +
+       </button>
+       
       </div>
     </div>
   );
