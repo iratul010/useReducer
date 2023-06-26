@@ -1,51 +1,76 @@
-import { useReducer } from "react";
+import React, { useReducer } from "react";
 
 function reducer(state, action) {
-     console.log(state)
-     switch(action.type){
-      case  "inc":
-        return  {...state,count:state.count+1 }
-      case  "dec":
-        return  {...state,count:state.count+1 }
-      case  "setCount": 
-        return  {...state, count:action.payload }
-     default:
-   return { count:0, state:1}
-}
+  console.log(state);
+  switch (action.type) {
+    case "inc":
+      return { ...state, count: state.count + state.step };
+    case "dec":
+      return { ...state, count: state.count - state.step };
+    case "setCount":
+      return { ...state, count: action.payload };
+    case "range":
+      return { ...state, step: action.payload };
+    default:
+      return { count: 0, step: 1 };
+  }
 }
 
 function App() {
-  const initial = { count: 0,step:1 };
+  const initial = { count: 0, step: 1 };
   const [state, dispatch] = useReducer(reducer, initial);
- 
-  const {count,step} = state;
+
+  const { count, step } = state;
 
   const handleInputChange = (event) => {
     const inputValue = parseInt(event.target.value);
-    dispatch({ type: 'setCount', payload: inputValue });
+    dispatch({ type: "setCount", payload: inputValue });
+  };
+
+  const handleRangeChange = (event) => {
+    const inputValue = Number(event.target.value);
+    dispatch({ type: "range", payload: inputValue });
   };
 
   return (
-    <div className='flex justify-center items-center flex-col'>
-      <h2 className='text-3xl text-green-600 text-center'>
-        <span className='underline text-red-500'>Hooks</span>: useReducer
+    <div className="flex justify-center items-center flex-col">
+      <h2 className="text-3xl text-green-600 text-center">
+        <span className="underline text-red-500">Hooks</span>: useReducer
       </h2>
-      <div className="stat-value text-center p-5 m-5 rounded bg-emerald-950 w-[145px] text-white">{count}</div>
-      <div className='flex text-center  justify-center items-center w-[400px] m-5 gap-5'>  <button className="btn btn-outline btn-error text-3xl" onClick={() => dispatch({ type: 'dec', payload: 1 })}>
-      -
-     </button>
-    
+      <div className="stat-value text-center p-5 m-5 rounded bg-emerald-950 w-[145px] text-white">
+        {count}
+      </div>
+      <div className="w-[300px] flex flex-row gap-4 justify-center items-center">
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={step}
+          className="range"
+          onChange={handleRangeChange}
+        />
+        <p className="text-2xl">{step}</p>
+      </div>
+      <div className="flex text-center justify-center items-center w-[400px] m-5 gap-5">
+        <button
+          className="btn btn-outline btn-error text-3xl"
+          onClick={() => dispatch({ type: "dec", payload: 1 })}
+        >
+          -
+        </button>
+
         <input
           type="text"
           placeholder="Type here"
           className="input input-bordered input-primary w-full max-w-xs"
-          
           onChange={handleInputChange}
         />
-        <button className="btn btn-outline btn-success text-3xl" onClick={() => dispatch({ type: 'inc', payload: 1 })}>
-        +
-       </button>
-       
+        <button
+          className="btn btn-outline btn-success text-3xl"
+          onClick={() => dispatch({ type: "inc", payload: 1 })}
+        >
+          +
+        </button>
       </div>
     </div>
   );
