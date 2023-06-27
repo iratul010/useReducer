@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import Main from "./Main";
 const initial = { count: 0, step: 1 };
 function reducer(state, action) {
  
@@ -21,6 +22,7 @@ function reducer(state, action) {
 function App() {
  
   const [state, dispatch] = useReducer(reducer, initial);
+ 
 
   const { count, step } = state;
 
@@ -74,9 +76,12 @@ function App() {
           +
         </button>
       </div>
-      <button className="btn btn-primary" onClick={()=>dispatch({type:'reset',})}>Reset</button>
+      <button className="btn mb-5 btn-primary" onClick={()=>dispatch({type:'reset',})}>Reset</button>
+      <Main/>
     </div>
   );
 }
 
 export default App;
+ 
+ 
